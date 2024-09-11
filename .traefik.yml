@@ -1,12 +1,11 @@
-displayName: Demo Plugin
+displayName: JSON response picker
 type: middleware
 iconPath: .assets/icon.png
 
-import: github.com/traefik/plugindemo
+import: github.com/FlowingSPDG/traefik-plugin-pick-response-json
+basePkg: pickjson
 
-summary: '[Demo] Add Request Header'
+summary: 'Convert URL queries into JSON field'
 
 testData:
-  Headers:
-    X-Demo: test
-    X-URL: '{{URL}}'
+  Field: body
