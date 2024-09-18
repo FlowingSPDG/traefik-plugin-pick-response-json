@@ -21,6 +21,8 @@ func newResponseStealer(rw http.ResponseWriter, buf *bytes.Buffer) *responseStea
 var _ = (*responseStealer)(nil)
 
 func (s *responseStealer) WriteHeader(code int) {
+	s.rw.Header().Del("Content-Length")
+	s.rw.Header().Set("Content-Type", "application/json; charset=utf-8")
 	s.rw.WriteHeader(code)
 }
 
