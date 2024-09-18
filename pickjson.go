@@ -57,7 +57,7 @@ func (a *Demo) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	val, ok := jsonResp[a.cfg.Field]
+	field, ok := jsonResp[a.cfg.Field]
 	if !ok {
 		if err := json.NewEncoder(rw).Encode(jsonResp); err != nil {
 			http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -65,7 +65,22 @@ func (a *Demo) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		}
 		return
 	}
-	if err := json.NewEncoder(rw).Encode(val); err != nil {
+
+	fieldStr, ok := (field).(string)
+	if !ok {
+		if err := json.NewEncoder(rw).Encode(jsonResp); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+	value := make(map[string]any, 0)
+	if err := json.Unmarshal([]byte(fieldStr), &value); err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(rw).Encode(value); err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
