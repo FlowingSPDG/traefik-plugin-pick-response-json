@@ -1,3 +1,4 @@
+// pickjson is a traefik middleware plugin for picking up specified field of response json
 package pickjson
 
 import (
@@ -19,8 +20,8 @@ func CreateConfig() *Config {
 	}
 }
 
-// Demo a Demo plugin.
-type Demo struct {
+// Picker JSON Picker plugin.
+type Picker struct {
 	next http.Handler
 	name string
 	cfg  *Config
@@ -28,14 +29,14 @@ type Demo struct {
 
 // New created a new Demo plugin.
 func New(_ context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	return &Demo{
+	return &Picker{
 		next: next,
 		name: name,
 		cfg:  config,
 	}, nil
 }
 
-func (a *Demo) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+func (a *Picker) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	// make a "response stealer" so we can read response and modify them
 	b := make([]byte, 0)
 	buf := bytes.NewBuffer(b)
